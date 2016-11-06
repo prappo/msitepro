@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
@@ -70,8 +71,34 @@ class UserController extends Controller
 
     }
 
+    public function updateImage(Request $request){
+        try{
+            User::where('email',Auth::user()->email)->update([
+                "image"=>$request->image
+            ]);
+            return "success";
+        }catch (\Exception $exception){
+            return $exception->getMessage();
+        }
+    }
+
     public function imageUpdate(Request $request)
     {
-
+        $file = $request->file('file');
+        $fileName = date('YmdHis');
+        $fileType = $file->getClientMimeType();
+        if ($fileType == 'image/jpeg' || $fileType == 'image/png') {
+            try {
+                Input::file('file')->move(public_path() . '/uploads/', $fileName . "." . $file->getClientOriginalExtension());
+                return response()->json(["status" => "success", "fileName" => $fileName . "." . $file->getClientOriginalExtension()]);
+            } catch (\Exception $e) {
+                echo "error";
+            }
+        } else {
+            echo "invalid File";
+        }
     }
+
+
+
 }

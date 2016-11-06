@@ -14,7 +14,7 @@
                     <div class="portlet light profile-sidebar-portlet">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic">
-                            <img src="{{url('/img/me.jpg')}}" class="img-responsive" alt="">
+                            <img src="@if(Auth::user()->image == ""){{url('/img/me.jpg')}} @else {{url('/uploads')."/".Auth::user()->image}} @endif" class="img-responsive" alt="">
                         </div>
                         <!-- END SIDEBAR USERPIC -->
                         <!-- SIDEBAR USER TITLE -->
@@ -731,7 +731,7 @@
                                     <div class="form-group">
                                         <label class="control-label">About</label>
                                         <textarea id="about" class="form-control" rows="3"
-                                                  placeholder="We are KeenThemes!!!">{{Auth::user()->about}}</textarea>
+                                                  placeholder="">{{Auth::user()->about}}</textarea>
                                     </div>
 
                                     <div class="margiv-top-10">
@@ -745,30 +745,21 @@
                             <!-- CHANGE AVATAR TAB -->
                             <div class="tab-pane" id="tab_1_2">
 
-                                <form action="#" role="form">
-                                    <div class="form-group">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-
-
-                                            <div>
-																<span class="btn default btn-file">
-																<span class="fileinput-new">
-																Select image </span>
-																<span class="fileinput-exists">
-																Change </span>
-																<input type="file" name="...">
-																</span>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <a href="javascript:;" class="btn green-haze">
-                                            Save Image </a>
-
-                                    </div>
+                                <form id="uploadimage" method="post" enctype="multipart/form-data">
+                                    <label>Select Your Image</label><br/>
+                                    <input type="file" name="file"
+                                           id="file"/><br>
+                                    <input class="btn btn-xs btn-success" type="submit" value="Upload"
+                                           id="imgUploadBtn"/>
+                                    <input type="hidden" id="image">
+                                    <div id="imgMsg"></div>
                                 </form>
+                                <br>
+                                <div class="margiv-top-10">
+                                    <a id="saveImage" class="btn green-haze">
+                                        Save Image </a>
+
+                                </div>
                             </div>
                             <!-- END CHANGE AVATAR TAB -->
                             <!-- CHANGE PASSWORD TAB -->
@@ -877,6 +868,61 @@
 //                    swal('Error',data,'error');
                 }
             })
-        })
+        });
+
+        $('#saveImage').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '{{url('/profile/update/image')}}',
+                data: {
+                    'image': $('#image').val(),
+
+                    '_token': '{{csrf_token()}}'
+                },
+                success: function (data) {
+                    if (data == 'success') {
+                        alert('Profile picture updated');
+//                        swal('Success','Password change','success');
+                        location.reload();
+                    } else {
+                        alert(data);
+//                        swal('Error',data,'error');
+                    }
+
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+//                    swal('Error',data,'error');
+                }
+            })
+        });
+
+        $("#uploadimage").on('submit', (function (e) {
+            e.preventDefault();
+            $('#imgMsg').html("Please wait ...");
+            $.ajax({
+                type: "POST",
+                url: "{{url('/image/upload')}}",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    if (data['status'] == 'success') {
+                        $('#image').val(data['fileName']);
+                        $('#imgMsg').html("Image file uploaded successfully ");
+//                        swal('Success!', 'Image File succefully uploaded', 'success');
+                        $('#imgPreview').attr('src', 'uploads/' + data['fileName']);
+                    }
+                    else {
+//                        swal('Error!', data, 'error');
+                        $('#imgMsg').html("Something went wrong can't upload image");
+                    }
+                },
+                error:function(data){
+                    console.log(data.responseText);
+                }
+            });
+        }));
     </script>
 @endsection

@@ -26,5 +26,7 @@ Route::get('/account/verify','VerificationController@code');
 Route::post('/account/verify','VerificationController@active');
 Route::post('/profile/update/account','UserController@profileUpdate');
 Route::post('/profile/update/password','UserController@passwordUpdate');
+Route::post('/profile/update/image','UserController@updateImage');
+Route::post('/image/upload','UserController@imageUpdate');
 
 Route::resource('contact','ContactController');

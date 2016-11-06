@@ -8,7 +8,7 @@
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
 @if(Auth::user()->status != 'active')
-{{die("Your Account is not activated . Please active your account <a href='".url('/verification')."'>Here </a>")}}
+    {{die("Your Account is not activated . Please active your account <a href='".url('/verification')."'>Here </a>")}}
 @endif
 <head>
     <meta charset="utf-8"/>
@@ -17,6 +17,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="" name="description"/>
     <meta content="" name="author"/>
+    <meta name="_token" content="{{csrf_token()}}"/>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
           type="text/css"/>
@@ -50,8 +51,9 @@
           id="style_color"/>
     <link href="{{url('/assets/admin/layout4/css/custom.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{url('/assets/admin/pages/css/profile.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{url('/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css')}}" />
-    <link href="{{url('/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url('/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css')}}"/>
+    <link href="{{url('/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css')}}"
+          rel="stylesheet" type="text/css"/>
     <!-- END THEME STYLES -->
     <link rel="shortcut icon" href="favicon.ico"/>
 </head>
@@ -86,24 +88,45 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="{{url('/post/new')}}">
+                        <a href="{{url('/admin/user/post/create')}}">
                             <i class="icon-docs"></i> New Post </a>
                     </li>
                     <li>
-                        <a href="{{url('/song/new')}}">
-                            <i class="icon-music-tone"></i> Upload Song </a>
+                        <a href="{{url('/admin/user/song/create')}}">
+                            <i class="icon-plus"></i> Add Song </a>
+                    </li>
+                    <li>
+                        <a href="{{url('/admin/user/video/create')}}">
+                            <i class="icon-plus"></i> Add Video </a>
+                    </li>
+
+                    <li>
+                        <a href="{{url('/admin/user/event/create')}}">
+                            <i class="icon-plus"></i> Add event </a>
                     </li>
 
                     <li class="divider">
                     </li>
+
                     <li>
-                        <a href="{{url('/my/songs/')}}">
+                        <a href="{{url('/admin/user/posts')}}">
+                            <i class="icon-docs"></i> Posts <span class="badge badge-danger">2</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{url('/admin/user/song/')}}">
                             <i class="icon-music-tone-alt"></i> Songs <span class="badge badge-success">4</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{url('/my/posts')}}">
-                            <i class="icon-docs"></i> Posts <span class="badge badge-danger">2</span>
+                        <a href="{{url('/admin/user/video/')}}">
+                            <i class="icon-camcorder"></i> Videos <span class="badge badge-primary">4</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('/admin/user/event/')}}">
+                            <i class="icon-calendar"></i> Events <span class="badge badge-warning">4</span>
                         </a>
                     </li>
                 </ul>
@@ -257,7 +280,8 @@
 						<span class="username username-hide-on-mobile">
 						{{Auth::user()->name}} </span>
                             <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-                            <img alt="" class="img-circle" src="{{url('/img/me.jpg')}}"/>
+                            <img alt="" class="img-circle"
+                                 src="@if(Auth::user()->image == ""){{url('/img/me.jpg')}} @else {{url('/uploads')."/".Auth::user()->image}} @endif"/>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
@@ -309,47 +333,7 @@
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-docs"></i>
-                        <span class="title">Post</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="{{url('/post/new')}}">
-                                <i class="icon-plus"></i>
-                                New Post</a>
-                        </li>
-                        <li>
-                            <a href="{{url('/my/posts')}}">
-                                <i class="icon-docs"></i>
-                                <span class="badge badge-success">2</span>
-                                All Posts</a>
-                        </li>
 
-                    </ul>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-music-tone"></i>
-                        <span class="title">Songs</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="{{url('/my/song/new')}}">
-                                <i class="icon-plus"></i>
-                                New song</a>
-                        </li>
-                        <li>
-                            <a href="{{url('/my/songs')}}">
-                                <i class="icon-docs"></i>
-                                <span class="badge badge-warning">2</span>All songs</a>
-                        </li>
-
-                    </ul>
-                </li>
 
                 <li>
                     <a href="javascript:;">
@@ -371,76 +355,34 @@
 
                     </ul>
                 </li>
+                @if(Auth::user()->type == 'admin')
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-users"></i>
+                            <span class="title">Users</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="{{url('/user/add')}}">
+                                    <i class="icon-user-follow"></i>
+                                    Add New User</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/user/lists')}}">
+                                    <i class="icon-users"></i>
+                                    <span class="badge badge-danger">5</span>All User</a>
+                            </li>
 
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-camcorder"></i>
-                        <span class="title">Videos</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="{{url('/my/video/new')}}">
-                                <i class="icon-plus"></i>
-                                Upload Video</a>
-                        </li>
-                        <li>
-                            <a href="{{url('/my/videos')}}">
-                                <i class="icon-docs"></i>
-                                <span class="badge badge-danger">5</span>All Videos</a>
-                        </li>
+                            <li>
+                                <a href="{{url('/user/requests')}}">
+                                    <i class="icon-share"></i>
+                                    <span class="badge badge-warning">5</span>User Requests</a>
+                            </li>
 
-                    </ul>
-                </li>
-
-
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-calendar"></i>
-                        <span class="title">Events</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="{{url('/my/event/new')}}">
-                                <i class="icon-plus"></i>
-                                Add Event</a>
-                        </li>
-                        <li>
-                            <a href="{{url('/my/events')}}">
-                                <i class="icon-docs"></i>
-                                <span class="badge badge-danger">5</span>All Events</a>
-                        </li>
-
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript:;">
-                        <i class="icon-users"></i>
-                        <span class="title">Users</span>
-                        <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="{{url('/user/add')}}">
-                                <i class="icon-user-follow"></i>
-                                Add New User</a>
-                        </li>
-                        <li>
-                            <a href="{{url('/user/lists')}}">
-                                <i class="icon-users"></i>
-                                <span class="badge badge-danger">5</span>All User</a>
-                        </li>
-
-                        <li>
-                            <a href="{{url('/user/requests')}}">
-                                <i class="icon-share"></i>
-                                <span class="badge badge-warning">5</span>User Requests</a>
-                        </li>
-
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                @endif
 
                 <li>
                     <a href="{{url('/profile')}}">
@@ -450,15 +392,16 @@
                     </a>
 
                 </li>
+                @if(Auth::user()->type == 'admin')
+                    <li>
+                        <a href="{{url('/settings')}}">
+                            <i class="icon-settings"></i>
+                            <span class="title">Settings</span>
 
-                <li>
-                    <a href="{{url('/settings')}}">
-                        <i class="icon-settings"></i>
-                        <span class="title">Settings</span>
+                        </a>
 
-                    </a>
-
-                </li>
+                    </li>
+                @endif
 
             </ul>
             <!-- END SIDEBAR MENU -->
@@ -478,7 +421,7 @@
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
     <div class="page-footer-inner">
-        2016 &copy;  <a
+        2016 &copy; <a
                 href="http://trinolab.website"
                 title="Officials trinolabsiste" target="_blank">TrinoLab</a>
     </div>
@@ -524,8 +467,6 @@
 <script src="{{url('/assets/admin/pages/scripts/index3.js')}}" type="text/javascript"></script>
 <script src="{{url('/assets/admin/pages/scripts/tasks.js')}}" type="text/javascript"></script>
 <script src="{{url('/assets/global/plugins/datatables/all.min.js')}}" type="text/javascript"></script>
-
-
 
 
 <!-- END PAGE LEVEL SCRIPTS -->
