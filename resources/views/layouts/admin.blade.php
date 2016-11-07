@@ -54,6 +54,8 @@
     <link href="{{url('/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css')}}"/>
     <link href="{{url('/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css')}}"
           rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{url('/css/sweetalert.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url('/assets/global/plugins/bootstrap-summernote/summernote.css')}}" type="text/css">
     <!-- END THEME STYLES -->
     <link rel="shortcut icon" href="favicon.ico"/>
 </head>
@@ -89,7 +91,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <li>
                         <a href="{{url('/admin/user/post/create')}}">
-                            <i class="icon-docs"></i> New Post </a>
+                            <i class="icon-plus"></i> New Post </a>
                     </li>
                     <li>
                         <a href="{{url('/admin/user/song/create')}}">
@@ -110,23 +112,23 @@
 
                     <li>
                         <a href="{{url('/admin/user/posts')}}">
-                            <i class="icon-docs"></i> Posts <span class="badge badge-danger">2</span>
+                            <i class="icon-docs"></i> Posts <span class="badge badge-danger">{{\App\Post::where('userId',Auth::user()->id)->count()}}</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="{{url('/admin/user/song/')}}">
-                            <i class="icon-music-tone-alt"></i> Songs <span class="badge badge-success">4</span>
+                            <i class="icon-music-tone-alt"></i> Songs <span class="badge badge-success">{{\App\Song::where('userId',Auth::user()->id)->count()}}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{url('/admin/user/video/')}}">
-                            <i class="icon-camcorder"></i> Videos <span class="badge badge-primary">4</span>
+                            <i class="icon-camcorder"></i> Videos <span class="badge badge-primary">{{\App\Video::where('userId',Auth::user()->id)->count()}}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{url('/admin/user/event/')}}">
-                            <i class="icon-calendar"></i> Events <span class="badge badge-warning">4</span>
+                            <i class="icon-calendar"></i> Events <span class="badge badge-warning">{{\App\Event::where('userId',Auth::user()->id)->count()}}</span>
                         </a>
                     </li>
                 </ul>
@@ -350,7 +352,7 @@
                         <li>
                             <a href="{{url('/contact')}}">
                                 <i class="icon-list"></i>
-                                <span class="badge badge-warning">2</span>All Contacts</a>
+                                <span class="badge badge-warning">{{\App\Contacts::where('parent',Auth::user()->email)->count()}}</span>All Contacts</a>
                         </li>
 
                     </ul>
@@ -423,7 +425,7 @@
     <div class="page-footer-inner">
         2016 &copy; <a
                 href="http://trinolab.website"
-                title="Officials trinolabsiste" target="_blank">TrinoLab</a>
+                title="Officials trinolab site" target="_blank">TrinoLab</a>
     </div>
     <div class="scroll-to-top">
         <i class="icon-arrow-up"></i>
@@ -467,6 +469,8 @@
 <script src="{{url('/assets/admin/pages/scripts/index3.js')}}" type="text/javascript"></script>
 <script src="{{url('/assets/admin/pages/scripts/tasks.js')}}" type="text/javascript"></script>
 <script src="{{url('/assets/global/plugins/datatables/all.min.js')}}" type="text/javascript"></script>
+<script src="{{url('/assets/global/plugins/bootstrap-summernote/summernote.min.js')}}" type="text/javascript"></script>
+<script src="{{url('/js/sweetalert.min.js')}}"></script>
 
 
 <!-- END PAGE LEVEL SCRIPTS -->

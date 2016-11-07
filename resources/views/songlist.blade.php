@@ -7,7 +7,7 @@
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-globe"></i>Your Contact Lists
+                        <i class="fa fa-globe"></i>Your Songs
                     </div>
                     <div class="tools"></div>
                 </div>
@@ -15,21 +15,17 @@
                     <table class="table table-striped table-bordered table-hover" id="sample_2">
                         <thead>
                         <tr>
-                            <th> Name</th>
-                            <th> Mobile</th>
-                            <th> District</th>
-                            <th> Area</th>
-                            <th> Facebook ID</th>
+                            <th> Title</th>
+                            <th> Content</th>
+                            <th> Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($datas as $data)
                             <tr>
-                                <td> {{$data->name}}</td>
-                                <td> {{$data->mobile}}</td>
-                                <td> {{$data->district}}</td>
-                                <td> {{$data->area}}</td>
-                                <td> {{$data->facebookId}}</td>
+                                <td> {{$data->title}}</td>
+                                <td> {!! $data->content !!}</td>
+                                <td> <div class="btn-group"><button class="btn btn-small btn-danger"> <i class="fa fa-trash"></i> Delete</button> </div> </td>
                             </tr>
 
                         @endforeach

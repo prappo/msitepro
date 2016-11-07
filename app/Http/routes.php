@@ -30,3 +30,7 @@ Route::post('/profile/update/image','UserController@updateImage');
 Route::post('/image/upload','UserController@imageUpdate');
 
 Route::resource('contact','ContactController');
+Route::resource('/admin/user/song','SongController');
+Route::resource('/admin/user/video','VideoController');
+Route::resource('/admin/user/post','PostController');
+Route::resource('/admin/user/event','EventController');

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Video;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
@@ -25,7 +27,7 @@ class VideoController extends Controller
      */
     public function create()
     {
-        //
+        return view('addvideo');
     }
 
     /**
@@ -36,7 +38,17 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $video = new Video();
+            $video->title = $request->title;
+            $video->cat = $request->cat;
+            $video->content = $request->data;
+            $video->userId = Auth::user()->id;
+            $video->save();
+            return "success";
+        }catch (\Exception $exception){
+            return $exception->getMessage();
+        }
     }
 
     /**

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Song;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class SongController extends Controller
 {
@@ -15,7 +17,8 @@ class SongController extends Controller
      */
     public function index()
     {
-        //
+        $datas = Song::all();
+        return view('songlist',compact('datas'));
     }
 
     /**
@@ -25,7 +28,7 @@ class SongController extends Controller
      */
     public function create()
     {
-        //
+        return view('addsong');
     }
 
     /**
@@ -36,7 +39,17 @@ class SongController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $song = new Song();
+            $song->title = $request->title;
+            $song->cat = $request->cat;
+            $song->content = $request->data;
+            $song->userId = Auth::user()->id;
+            $song->save();
+            return "success";
+        }catch (\Exception $exception){
+            return $exception->getMessage();
+        }
     }
 
     /**
