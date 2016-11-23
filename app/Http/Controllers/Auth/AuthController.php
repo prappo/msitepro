@@ -44,7 +44,7 @@ class AuthController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -59,32 +59,32 @@ class AuthController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return User
      */
     public $email;
+
     protected function create(array $data)
     {
 
         $code = uniqid();
         $email = $data['email'];
         $this->email = $email;
-        Mail::send('mailtemplate',['code'=>$code,'name'=>$data['name']], function ($message) {
+        Mail::send('mailtemplate', ['code' => $code, 'name' => $data['name']], function ($message) {
             $message->from('prappo@trinolab.net', 'Music Site');
             $message->subject('Active your account');
             $message->to($this->email);
         });
 
-        return    User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-                'occupation' => $data['occupation'],
-                'code' => $code,
-                'type'=>'user',
-                'status'=>'pending',
-            ]);
-
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'occupation' => $data['occupation'],
+            'code' => $code,
+            'type' => 'user',
+            'status' => 'pending',
+        ]);
 
 
     }

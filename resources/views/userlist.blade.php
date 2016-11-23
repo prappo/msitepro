@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Song list')
+@section('title','Contact list')
 @section('content')
     <div class="row">
 
@@ -7,7 +7,7 @@
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-globe"></i>Your Songs
+                        <i class="fa fa-globe"></i>User Lists
                     </div>
                     <div class="tools"></div>
                 </div>
@@ -15,17 +15,22 @@
                     <table class="table table-striped table-bordered table-hover" id="sample_2">
                         <thead>
                         <tr>
-                            <th> Title</th>
-                            <th> Content</th>
+                            <th> Name</th>
+                            <th> Email</th>
+                            <th> Image</th>
+                            <th> Status</th>
                             <th> Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($datas as $data)
                             <tr>
-                                <td> {{$data->title}}</td>
-                                <td> {!! $data->content !!}</td>
-                                <td> <div class="btn-group"><button class="btn btn-small btn-danger"> <i class="fa fa-trash"></i> Delete</button> </div> </td>
+                                <td> {{$data->name}}</td>
+                                <td> {{$data->email}}</td>
+                                <td> <img height="80" width="80" class="img-circle" src="@if($data->image == null){{url('/img/me.jpg')}}@else{{url('/uploads')}}/{{$data->image}}@endif"> </td>
+                                <td>@if($data->status == 'active')<span class="label label-success">Active</span>@else<span class="label label-danger">Deactive</span> @endif</td>
+                                <td> <button id="active" class="btn btn-success">Active</button> <button id="deactive" class="btn btn-danger">Deactive</button> </td>
+
                             </tr>
 
                         @endforeach

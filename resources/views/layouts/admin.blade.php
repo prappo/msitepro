@@ -366,21 +366,21 @@
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a href="{{url('/user/add')}}">
+                                <a href="{{url('/admin/user/add')}}">
                                     <i class="icon-user-follow"></i>
                                     Add New User</a>
                             </li>
                             <li>
-                                <a href="{{url('/user/lists')}}">
+                                <a href="{{url('/admin/user/list')}}">
                                     <i class="icon-users"></i>
-                                    <span class="badge badge-danger">5</span>All User</a>
+                                    <span class="badge badge-danger">{{\App\User::all()->count()}}</span>All User</a>
                             </li>
 
-                            <li>
-                                <a href="{{url('/user/requests')}}">
-                                    <i class="icon-share"></i>
-                                    <span class="badge badge-warning">5</span>User Requests</a>
-                            </li>
+                            {{--<li>--}}
+                                {{--<a href="{{url('/user/requests')}}">--}}
+                                    {{--<i class="icon-share"></i>--}}
+                                    {{--<span class="badge badge-warning">5</span>User Requests</a>--}}
+                            {{--</li>--}}
 
                         </ul>
                     </li>

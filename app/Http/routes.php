@@ -28,6 +28,10 @@ Route::post('/profile/update/account','UserController@profileUpdate');
 Route::post('/profile/update/password','UserController@passwordUpdate');
 Route::post('/profile/update/image','UserController@updateImage');
 Route::post('/image/upload','UserController@imageUpdate');
+Route::get('/admin/user/add','UserController@addUserIndex');
+Route::post('/admin/user/add','UserController@addUser');
+Route::get('/admin/user/list','UserController@userList');
+Route::get('/admin/user/edit/{userId}','UserController@editUser');
 
 Route::resource('contact','ContactController');
 Route::resource('/admin/user/song','SongController');

@@ -296,13 +296,21 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Known as</label>
-                                        <input id="knownAs" type="text" value="" placeholder=""
-                                               class="form-control">
+                                        <select id="knownAs" class="form-control">
+                                            @foreach(\App\Known::where('identity','as')->get() as $as)
+                                                <option value="{{$as->value}}">{{$as->value}}</option>
+                                            @endforeach
+                                        </select>
+
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Known at</label>
-                                        <input id="knownAt" type="text" value="" placeholder=""
-                                               class="form-control">
+                                        <select id="knownAt" class="form-control">
+                                            @foreach(\App\Known::where('identity','at')->get() as $at)
+                                                <option value="{{$at->value}}">{{$at->value}}</option>
+                                            @endforeach
+                                        </select>
+
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label">Address</label>

@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +21,8 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
+        $datas = Video::where('userId',Auth::user()->id)->get();
+        return view('videolist',compact('datas'));
     }
 
     /**

@@ -99,6 +99,49 @@ class UserController extends Controller
         }
     }
 
+    public function addUserIndex(){
+        return view('addUser');
+    }
+
+    public function addUser(Request $request){
+//        bcrypt
+        if($request->name == ""){
+            return "Name required";
+        }
+
+        if($request->email == ""){
+            return "Email required";
+        }
+
+        if($request->pass == ""){
+            return "Password required";
+        }
+        if(User::where('email',$request->email)->exists()){
+            return "Email already exists";
+        }
+        try{
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->pass);
+            $user->status = "active";
+            $user->save();
+            return "success";
+        }catch (\Exception $exception){
+            return $exception->getMessage();
+        }
+    }
+
+    public function editUser($userId){
+        $datas = User::where('id',$userId)->get();
+        return view('edituser',compact('datas'));
+    }
+
+    public function userList(){
+        $datas = User::all();
+        return view('userlist',compact('datas'));
+    }
+
 
 
 }
