@@ -32,6 +32,7 @@ Route::get('/admin/user/add','UserController@addUserIndex');
 Route::post('/admin/user/add','UserController@addUser');
 Route::get('/admin/user/list','UserController@userList');
 Route::get('/admin/user/edit/{userId}','UserController@editUser');
+Route::post('/admin/user/status','UserController@changeStatus');
 
 Route::resource('contact','ContactController');
 Route::resource('/admin/user/song','SongController');

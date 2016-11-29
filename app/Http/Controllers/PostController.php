@@ -21,7 +21,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $datas = Post::where('userId',Auth::user()->id)->get();
+        return view('postlist',compact('datas'));
     }
 
     /**

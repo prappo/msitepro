@@ -142,6 +142,21 @@ class UserController extends Controller
         return view('userlist',compact('datas'));
     }
 
+    public function changeStatus(Request $request){
+        $id = $request->id;
+        $status = $request->status;
+        if(User::where('id',$id)->value('email') == Auth::user()->email){
+            return "You can't change your own account's status";
+        }
+        try{
+            User::where('id',$id)->update([
+                'status'=>$status
+            ]);
+            return "success";
+        }catch (\Exception $exception){
+            return $exception->getMessage();
+        }
+    }
 
 
 }

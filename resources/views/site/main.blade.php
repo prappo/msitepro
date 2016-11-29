@@ -74,7 +74,8 @@
             @else
                 <div class="avatar">
                     <a href="{{url('/home')}}">Me</a>
-                   <img src="{{url('img/me.jpg')}}" alt="avatar">
+                    <img src="@if(Auth::user()->image == null){{url('img/me.jpg')}} @else {{url('/uploads') }}/{{Auth::user()->image}}@endif"
+                         alt="avatar">
                 </div>
         @endif
         <!-- menu extra -->
@@ -85,8 +86,10 @@
                 @else
                     <li><a target="_blank" href="{{url('/profile')}}">{{Auth::user()->name}}</a></li>
                 @endif
-                <li>@if (Auth::guest()) <a  class="mobile-hide"
-                                           href="{{url('/login')}}"> Log in</a> @else <a class="mobile-hide" href="{{url('/logout')}}"> Log out</a> @endif
+                <li>@if (Auth::guest()) <a class="mobile-hide"
+                                           href="{{url('/login')}}"> Log in</a> @else <a class="mobile-hide"
+                                                                                         href="{{url('/logout')}}"> Log
+                        out</a> @endif
 
                 </li>
             </ul>

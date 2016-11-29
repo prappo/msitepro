@@ -27,9 +27,16 @@
                             <tr>
                                 <td> {{$data->name}}</td>
                                 <td> {{$data->email}}</td>
-                                <td> <img height="80" width="80" class="img-circle" src="@if($data->image == null){{url('/img/me.jpg')}}@else{{url('/uploads')}}/{{$data->image}}@endif"> </td>
-                                <td>@if($data->status == 'active')<span class="label label-success">Active</span>@else<span class="label label-danger">Deactive</span> @endif</td>
-                                <td> <button id="active" class="btn btn-success">Active</button> <button id="deactive" class="btn btn-danger">Deactive</button> </td>
+                                <td><img height="80" width="80" class="img-circle"
+                                         src="@if($data->image == null){{url('/img/me.jpg')}}@else{{url('/uploads')}}/{{$data->image}}@endif">
+                                </td>
+                                <td>@if($data->status == 'active')<span class="label label-success">Active</span>@else
+                                        <span class="label label-danger">Deactive</span> @endif</td>
+                                <td>
+                                    <button @if($data->status == 'active') disabled @endif data-id="{{$data->id}}" id="active" class="btn btn-success">Active</button>
+                                    <button @if($data->status != 'active') disabled @endif data-id="{{$data->id}}" id="deactive" class="btn btn-danger">Deactive
+                                    </button>
+                                </td>
 
                             </tr>
 
@@ -43,4 +50,57 @@
         </div>
     </div>
 
+@endsection
+@section('js')
+    <script>
+        $('.btn-success').click(function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                type: 'POST',
+                url: '{{url('/admin/user/status')}}',
+                data: {
+                    'id': id,
+                    'status': 'active',
+                    '_token':'{{csrf_token()}}'
+                },
+                success: function (data) {
+                    if (data == 'success') {
+                        swal('Success', 'User activated', 'success');
+                        location.reload();
+                    } else {
+                        swal('Error', data, 'error');
+                    }
+                },
+                error: function (data) {
+                    swal('Error', 'Something went wrong , Please check the console message', 'error');
+                    console.log(data.responseText);
+                }
+            });
+        });
+
+        $('.btn-danger').click(function () {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                type: 'POST',
+                url: '{{url('/admin/user/status')}}',
+                data: {
+                    'id': id,
+                    'status': 'deactive',
+                    '_token':'{{csrf_token()}}'
+                },
+                success: function (data) {
+                    if (data == 'success') {
+                        swal('Success', 'User Deactivated', 'success');
+                        location.reload();
+                    } else {
+                        swal('Error', data, 'error');
+                    }
+                },
+                error: function (data) {
+                    swal('Error', 'Something went wrong , Please check the console message', 'error');
+                    console.log(data.responseText);
+                }
+            });
+        });
+    </script>
 @endsection

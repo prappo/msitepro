@@ -111,7 +111,7 @@
                     </li>
 
                     <li>
-                        <a href="{{url('/admin/user/posts')}}">
+                        <a href="{{url('/admin/user/post')}}">
                             <i class="icon-docs"></i> Posts <span class="badge badge-danger">{{\App\Post::where('userId',Auth::user()->id)->count()}}</span>
                         </a>
                     </li>
